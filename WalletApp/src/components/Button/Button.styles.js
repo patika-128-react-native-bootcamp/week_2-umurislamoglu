@@ -7,13 +7,12 @@ export default StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 15,
     borderRadius: 3,
-    padding:5,
+    padding: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    
   },
   title: {
-    color:"#fff",
+    color: '#fff',
     fontWeight: 'bold',
     fontSize: 15,
   },

@@ -1,13 +1,23 @@
-import React from 'react'
-import { View , Text } from 'react-native'
-import styles from "./FilterBadge.styles"
+import React from 'react';
+import {View, Text} from 'react-native';
+import styles from './FilterBadge.styles';
 
-const FilterBadge = ({title, active}) => {
-    return (
-        <View style={active===true?styles.containerActive:styles.container}>
-            <Text style={active===true?styles.titleActive:styles.title}>{title}</Text>
-        </View>
-    )
-}
+const FilterBadge = ({title, activeBadge, setActiveBadge}) => {
+  const onBadgePress = () => {
+    setActiveBadge(title);
+    console.log('girdi');
+  };
 
-export default FilterBadge
+  return (
+    <View
+      style={activeBadge === title ? styles.containerActive : styles.container}
+      onStartShouldSetResponder={onBadgePress}>
+      <Text 
+        style={activeBadge === title ? styles.titleActive : styles.title}>
+        {title}
+      </Text>
+    </View>
+  );
+};
+
+export default FilterBadge;
