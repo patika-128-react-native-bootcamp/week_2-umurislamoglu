@@ -3,30 +3,9 @@ import {FlatList, View} from 'react-native';
 import ListItem from './ListItem';
 import styles from './ProductList.styles';
 
-const DATA = [
-  {
-    id: 1,
-    name: 'aasd',
-    price: 1,
-  },
-  {
-    id: 2,
-    name: 'basdasd',
-    price: 15,
-  },
-  {
-    id: 3,
-    name: 'casdasd',
-    price: 78,
-  },
-  {
-    id: 4,
-    name: 'dasdasd',
-    price: 79,
-  },
-];
 
-const ProductList = () => {
+
+const ProductList = ({productData}) => {
   const renderItems = ({item}) => (
     <ListItem productName={item.name} price={item.price} />
   );
@@ -34,7 +13,7 @@ const ProductList = () => {
   return (
     <View style={styles.flatListContainer}>
       <FlatList
-        data={DATA}
+        data={productData}
         renderItem={renderItems}
         keyExtractor={product => product.id}
       />
