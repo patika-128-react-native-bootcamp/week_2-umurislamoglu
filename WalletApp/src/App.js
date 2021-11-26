@@ -6,70 +6,55 @@ import ProductInput from './components/ProductInput/ProductInput';
 import ProductList from './components/ProductList/ProductList';
 
 const App = () => {
-  const DATA = [
-    {
-      id: 1,
-      name: 'aasd',
-      price: 1,
-      date:  1519211809934,
-    },
-    {
-      id: 2,
-      name: 'basdasd',
-      price: 15,
-      date:  1519211809935,
-    },
-    {
-      id: 3,
-      name: 'casdasd',
-      price: 79,
-      date:  1519211809936,
-    },
-    {
-      id: 4,
-      name: 'dasdasd',
-      price: 78,
-      date:  1519211809937,
-    },
-  ];
-
   const [activeBadge, setActiveBadge] = useState('');
-  const [productData, setProductData] = useState(DATA);
+  const [productData, setProductData] = useState([]);
+  const [renderFlag, setRenderFlag] = useState(false);
 
   //Badge items
   const badgeTitles = ['Artan Fiyat', 'Azalan Fiyat', 'Tarih'];
 
-  //Function to sort product array
+  const onBadgePress = (title) => {
+    setActiveBadge(title);
+  };
+
   const sortByBadge = (data, keyword) => {
+    let sorted;
+console.log(keyword)
     switch (keyword) {
       case 'Artan Fiyat':
-        data.sort((a, b) => {
+        sorted = data.sort((a, b) => {
           return a.price - b.price;
         });
         break;
       case 'Azalan Fiyat':
-        data.sort((a, b) => {
+        sorted = data.sort((a, b) => {
           return b.price - a.price;
         });
         break;
       case 'Tarih':
-        data.sort((a, b) => {
+        sorted = data.sort((a, b) => {
           return b.date - a.date;
         });
         break;
       default:
-        data;
+        sorted = data;
     }
+    console.log(sorted)
+    setRenderFlag(prevState=>!prevState)
+    return sorted;
   };
 
   useEffect(() => {
-    sortByBadge(DATA, activeBadge);
-    setProductData(DATA)
+    console.log(activeBadge)
+    let sortedProducts = sortByBadge(productData, activeBadge)
+    console.log(sortedProducts)
+    setProductData(sortedProducts);
+    console.log(productData)
   }, [activeBadge]);
 
   return (
     <SafeAreaView style={styles.appContainer}>
-      <ScrollView>
+      <ScrollView  style={styles.appContainer} keyboardShouldPersistTaps="always">
         <View style={styles.buttonContainer}>
           {badgeTitles.map((titleItem, idx) => {
             return (
@@ -77,18 +62,29 @@ const App = () => {
                 key={idx}
                 title={titleItem}
                 activeBadge={activeBadge}
-                setActiveBadge={setActiveBadge}
+                onBadgePress = {onBadgePress}
+
               />
             );
           })}
         </View>
         <View style={styles.productContainer}>
-          <ProductList productData={productData} />
+         <ProductList
+            productData={productData}
+            activeBadge={activeBadge}
+            renderFlag={renderFlag}
+          />
         </View>
         <View style={styles.inputContainer}>
-          <ProductInput />
+          <ProductInput
+            productData={productData}
+            activeBadge={activeBadge}
+            setProductData={setProductData}
+            sortByBadge={sortByBadge}
+            activeBadge={activeBadge}
+          />
         </View>
-      </ScrollView>
+        </ScrollView>
     </SafeAreaView>
   );
 };

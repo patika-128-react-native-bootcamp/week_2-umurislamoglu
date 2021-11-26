@@ -1,23 +1,22 @@
 import React from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList} from 'react-native';
 import ListItem from './ListItem';
-import styles from './ProductList.styles';
+
+const ProductList = ({productData, renderFlag}) => {
 
 
 
-const ProductList = ({productData}) => {
-  const renderItems = ({item}) => (
-    <ListItem productName={item.name} price={item.price} />
-  );
+  const renderItems = ({item}) => {
+    return <ListItem product={item} />;
+  };
 
   return (
-    <View style={styles.flatListContainer}>
-      <FlatList
-        data={productData}
-        renderItem={renderItems}
-        keyExtractor={product => product.id}
-      />
-    </View>
+    <FlatList
+      data={productData}
+      renderItem={renderItems}
+      keyExtractor={(item) => item.id}
+      extraData={renderFlag}
+    />
   );
 };
 

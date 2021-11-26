@@ -3,18 +3,33 @@ import {Text, TextInput, View} from 'react-native';
 import Button from '../Button/Button';
 import styles from './ProductInput.styles';
 
-const ProductInput = () => {
-  let product = {
-    name: '',
-    price: 0,
-    date: Date.now(),
-  };
+const ProductInput = ({productData , setProductData ,sortByBadge , activeBadge}) => {
+
 
   const [productName, setProductName] = useState('');
-  const [productPrice, setProductPrice] = useState(null);
+  const [productPrice, setProductPrice] = useState();
 
-  console.log(productName);
-  console.log(productPrice);
+  const  onAddPress = () => {
+
+    if(productName != "" || productPrice != null) {
+      let product = {
+        id: Math.random().toString(36).substr(2, 9),
+        name: productName,
+        price : productPrice,
+        date:Date.now(),
+   
+     }
+     let tempData = [...productData,product];
+     let sortedData = sortByBadge(tempData,activeBadge)
+     setProductData(sortedData);
+     setProductName("")
+     setProductPrice()
+
+    }
+  }
+
+
+
 
   return (
     <View style={{flex: 1}}>
@@ -24,6 +39,7 @@ const ProductInput = () => {
           autofocus
           style={styles.inputTextArea}
           onChangeText={setProductName}
+          value={productName}
         />
       </View>
       <View style={styles.inputPair}>
@@ -33,9 +49,10 @@ const ProductInput = () => {
           style={styles.inputTextArea}
           onChangeText={setProductPrice}
           keyboardType="numeric"
+          value={productPrice}
         />
       </View>
-      <Button title={'Add'} style={styles.addButton} />
+      <Button title={'Add'} style={styles.addButton} onPress={onAddPress} />
     </View>
   );
 };

@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   productContainer: {
     flex: 8,
-    height: windowHeight*(2/3),
+    height: windowHeight*(8/12),
   },
   inputContainer: {
     flex: 3,
