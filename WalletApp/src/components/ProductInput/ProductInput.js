@@ -24,7 +24,6 @@ const ProductInput = ({productData , setProductData ,sortByBadge , activeBadge})
      setProductData(sortedData);
      setProductName("")
      setProductPrice()
-
     }
   }
 

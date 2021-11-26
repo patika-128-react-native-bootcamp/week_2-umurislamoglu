@@ -5,7 +5,12 @@ import styles from './FilterBadge.styles';
 const FilterBadge = ({title, activeBadge, onBadgePress}) => {
 
   const onPress= ()=> {
+  if(title === activeBadge){
+    onBadgePress("")
+  } else {
     onBadgePress(title)
+  }
+   
   }
 
   return (

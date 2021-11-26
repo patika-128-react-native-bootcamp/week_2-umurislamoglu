@@ -2,10 +2,8 @@ import React from 'react';
 import {FlatList} from 'react-native';
 import ListItem from './ListItem';
 
+
 const ProductList = ({productData, renderFlag}) => {
-
-
-
   const renderItems = ({item}) => {
     return <ListItem product={item} />;
   };
@@ -14,7 +12,7 @@ const ProductList = ({productData, renderFlag}) => {
     <FlatList
       data={productData}
       renderItem={renderItems}
-      keyExtractor={(item) => item.id}
+      keyExtractor={item => item.id}
       extraData={renderFlag}
     />
   );

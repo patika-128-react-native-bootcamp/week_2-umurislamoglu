@@ -1,25 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, View, ScrollView} from 'react-native';
-import FilterBadge from './components/Badge/FilterBadge';
+import {SafeAreaView, View, ScrollView , LogBox} from 'react-native';
 import styles from './App.styles';
-import ProductInput from './components/ProductInput/ProductInput';
 import ProductList from './components/ProductList/ProductList';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 const App = () => {
   const [activeBadge, setActiveBadge] = useState('');
   const [productData, setProductData] = useState([]);
   const [renderFlag, setRenderFlag] = useState(false);
 
-  //Badge items
-  const badgeTitles = ['Artan Fiyat', 'Azalan Fiyat', 'Tarih'];
-
-  const onBadgePress = (title) => {
-    setActiveBadge(title);
-  };
-
   const sortByBadge = (data, keyword) => {
     let sorted;
-console.log(keyword)
     switch (keyword) {
       case 'Artan Fiyat':
         sorted = data.sort((a, b) => {
@@ -37,54 +29,47 @@ console.log(keyword)
         });
         break;
       default:
-        sorted = data;
+        sorted = data.sort((a, b) => {
+          return a.date - b.date;
+        });
     }
-    console.log(sorted)
-    setRenderFlag(prevState=>!prevState)
+    setRenderFlag(prevState => !prevState);
     return sorted;
   };
 
+  
+  //VirtualizeList error'u için yapıldı. ScrollView içinde FlatList kullanıldığı için bu hata alındı.
+  LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+
+
+
   useEffect(() => {
-    console.log(activeBadge)
-    let sortedProducts = sortByBadge(productData, activeBadge)
-    console.log(sortedProducts)
+    let sortedProducts = sortByBadge(productData, activeBadge);
     setProductData(sortedProducts);
-    console.log(productData)
   }, [activeBadge]);
 
   return (
     <SafeAreaView style={styles.appContainer}>
-      <ScrollView  style={styles.appContainer} keyboardShouldPersistTaps="always">
-        <View style={styles.buttonContainer}>
-          {badgeTitles.map((titleItem, idx) => {
-            return (
-              <FilterBadge
-                key={idx}
-                title={titleItem}
-                activeBadge={activeBadge}
-                onBadgePress = {onBadgePress}
+      <ScrollView style={styles.appContainer} nestedScrollEnabled={true}>
+        <Header
+          activeBadge={activeBadge}
+          setActiveBadge={setActiveBadge}
+        />
 
-              />
-            );
-          })}
-        </View>
         <View style={styles.productContainer}>
-         <ProductList
+          <ProductList
             productData={productData}
             activeBadge={activeBadge}
             renderFlag={renderFlag}
           />
         </View>
-        <View style={styles.inputContainer}>
-          <ProductInput
-            productData={productData}
-            activeBadge={activeBadge}
-            setProductData={setProductData}
-            sortByBadge={sortByBadge}
-            activeBadge={activeBadge}
-          />
-        </View>
-        </ScrollView>
+        <Footer
+          productData={productData}
+          activeBadge={activeBadge}
+          setProductData={setProductData}
+          sortByBadge={sortByBadge}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
